@@ -10,7 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title> GrantBridge</title>
-        <meta name="description" content="Discover and applay for grants"/>
+        <meta name="get funding " content="Discover and applay for grants"/>
       </head>
       <body className="bg-white text-gray-900">
         
