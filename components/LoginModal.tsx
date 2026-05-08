@@ -13,13 +13,37 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Need supabase client
+  const { supabase } = require("@/lib/supabase/client");
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(isLogin ? "Logging in..." : "Signing up...", { email, password, name });
-    alert(isLogin ? "Login functionality coming soon!" : "Sign up functionality coming soon!");
+    setLoading(true);
+    setError(null);
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.auth.signUp({ 
+          email, 
+          password,
+          options: { data: { name } }
+        });
+        if (error) throw error;
+        // if email confirmation is on, they might need to confirm.
+      }
+      onClose();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,6 +108,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-900/20 border border-red-500/30 text-red-400 p-3 rounded-xl text-xs">
+                {error}
+              </div>
+            )}
+            
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-[#A6A99F] mb-1.5">
@@ -134,10 +164,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3.5 bg-[#C6A15B] text-[#12150F] rounded-xl hover:bg-[#d4b46d] transition-all font-bold text-sm shadow-lg shadow-[#C6A15B]/20 hover:shadow-xl hover:shadow-[#C6A15B]/30 inline-flex items-center justify-center gap-2"
+              disabled={loading}
+              className="w-full py-3.5 bg-[#C6A15B] text-[#12150F] rounded-xl hover:bg-[#d4b46d] transition-all font-bold text-sm shadow-lg shadow-[#C6A15B]/20 hover:shadow-xl hover:shadow-[#C6A15B]/30 inline-flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isLogin ? "Sign In" : "Create Account"}
-              <FaArrowRight className="text-xs" />
+              {loading ? "Please wait..." : (isLogin ? "Sign In" : "Create Account")}
+              {!loading && <FaArrowRight className="text-xs" />}
             </button>
 
             {/* Divider */}

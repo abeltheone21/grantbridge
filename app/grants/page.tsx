@@ -8,24 +8,23 @@ import { useDebounce } from "@/hooks/useDebounce";
 import LoginModal from "@/components/LoginModal";
 
 interface Grant {
-  id: number;
+  id: string;
   title: string;
-  summary: string;
-  description: any;
-  amount?: number;
+  teaser: string;
+  full_description?: any;
+  max_amount?: number;
+  min_amount?: number;
   currency: string;
   location?: string;
   deadline?: string;
   status: string;
-  featured_image_id?: number;
   created_at: string;
   updated_at: string;
   slug: string;
   sector?: string;
-  eligibility?: string;
-  geographic_scope?: string;
-  featured_image?: { id: number; filename: string; url?: string } | null;
-  funding?: string;
+  category?: string;
+  implementation_area?: string;
+  image?: string | null;
 }
 
 interface SavedSearch {
@@ -37,9 +36,9 @@ interface SavedSearch {
 }
 
 const statusOptions = [
-  { value: "forecasted", label: "Forecasted" },
-  { value: "published", label: "Open" },
-  { value: "draft", label: "Closed" },
+  { value: "urgent", label: "Urgent" },
+  { value: "active", label: "Open" },
+  { value: "closed", label: "Closed" },
 ];
 
 const sectorOptions = [
@@ -91,7 +90,7 @@ export default function Grants() {
   const [grants, setGrants] = useState<Grant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(["published"]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(["active"]);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   const [selectedEligibility, setSelectedEligibility] = useState<string[]>([]);
   const [selectedFundingRanges, setSelectedFundingRanges] = useState<string[]>([]);
@@ -124,12 +123,12 @@ export default function Grants() {
     }
   }
   function clearAllFilters() {
-    setSelectedStatuses(["published"]); setSelectedSectors([]); setSelectedEligibility([]);
+    setSelectedStatuses(["active"]); setSelectedSectors([]); setSelectedEligibility([]);
     setSelectedFundingRanges([]); setSelectedGeographic([]); setSearchQuery("");
   }
 
   const allActiveFilters = [
-    ...selectedStatuses.filter(s => s !== 'published').map(v => ({ type: 'status', value: v, label: statusOptions.find(o => o.value === v)?.label || v })),
+    ...selectedStatuses.filter(s => s !== 'active').map(v => ({ type: 'status', value: v, label: statusOptions.find(o => o.value === v)?.label || v })),
     ...selectedSectors.map(v => ({ type: 'sector', value: v, label: sectorOptions.find(o => o.value === v)?.label || v })),
     ...selectedEligibility.map(v => ({ type: 'eligibility', value: v, label: eligibilityOptions.find(o => o.value === v)?.label || v })),
     ...selectedFundingRanges.map(v => ({ type: 'funding', value: v, label: fundingRangeOptions.find(o => o.value === v)?.label || v })),
@@ -162,7 +161,7 @@ export default function Grants() {
 
   function loadSearch(saved: SavedSearch) {
     const f = saved.filters || {};
-    setSearchQuery(saved.search_query || ''); setSelectedStatuses(f.selectedStatuses || ['published']);
+    setSearchQuery(saved.search_query || ''); setSelectedStatuses(f.selectedStatuses || ['active']);
     setSelectedSectors(f.selectedSectors || []); setSelectedEligibility(f.selectedEligibility || []);
     setSelectedFundingRanges(f.selectedFundingRanges || []); setSelectedGeographic(f.selectedGeographic || []);
   }
@@ -173,8 +172,8 @@ export default function Grants() {
   }
 
   function exportToCSV() {
-    const headers = ["Title", "Summary", "Amount", "Deadline", "Status", "Location", "Sector"];
-    const rows = grants.map(g => [g.title, g.summary, g.amount ? `${g.currency} ${g.amount}` : 'N/A', g.deadline || 'N/A', g.status, g.location || 'N/A', g.sector || 'N/A']);
+    const headers = ["Title", "Teaser", "Amount", "Deadline", "Status", "Location", "Sector"];
+    const rows = grants.map(g => [g.title, g.teaser, g.max_amount ? `${g.currency} ${g.max_amount}` : 'N/A', g.deadline || 'N/A', g.status, g.location || 'N/A', g.sector || 'N/A']);
     const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url; a.download = `grantbridge-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
@@ -183,30 +182,25 @@ export default function Grants() {
 
   function getImageUrl(image: any): string {
   if (!image) return '';
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  if (image.filename && supabaseUrl) {
-    return `${supabaseUrl}/storage/v1/object/public/media/${encodeURIComponent(image.filename)}`;
-  }
-  if (image.url?.startsWith('/')) return `http://localhost:3001${image.url}`;
-  if (image.filename) return `http://localhost:3001/api/media/file/${encodeURIComponent(image.filename)}`;
-  return '';
+  return image;
 }
 
   async function fetchGrants() {
     setLoading(true); setError(null);
     try {
-      let query = supabase.from('grants').select('*').order('created_at', { ascending: false });
-      if (debouncedSearch) query = query.or(`title.ilike.%${debouncedSearch}%,summary.ilike.%${debouncedSearch}%`);
-      if (selectedStatuses.length > 0) query = query.in('status', selectedStatuses);
-      const { data: grantsData, error: grantsError } = await query;
-      if (grantsError) throw grantsError;
-      let filteredData = (grantsData || []) as Grant[];
+      const queryParams = new URLSearchParams({ limit: '100' });
+      if (debouncedSearch) queryParams.append('search', debouncedSearch);
+      if (selectedStatuses.length > 0) queryParams.append('status', selectedStatuses[0]);
+
+      const res = await fetch(`/api/grants/public?${queryParams.toString()}`);
+      if (!res.ok) throw new Error('Failed to fetch grants');
+      const json = await res.json();
+      
+      let filteredData = (json.grants || []) as Grant[];
       if (selectedSectors.length > 0) filteredData = filteredData.filter(g => { const gs = g.sector?.toLowerCase() || ''; return selectedSectors.some(s => gs.includes(s)); });
-      if (selectedFundingRanges.length > 0) filteredData = filteredData.filter(g => { const a = g.amount || 0; return selectedFundingRanges.some(r => r === 'micro' ? a < 5000 : r === 'seed' ? a >= 5000 && a <= 50000 : a > 50000); });
-      const imageIds = filteredData.map(g => g.featured_image_id).filter((id): id is number => id != null);
-      let imageMap = new Map();
-      if (imageIds.length > 0) { const { data: mediaData } = await supabase.from('media').select('*').in('id', imageIds); if (mediaData) mediaData.forEach(m => imageMap.set(m.id, m)); }
-      setGrants(filteredData.map(g => ({ ...g, featured_image: g.featured_image_id ? imageMap.get(g.featured_image_id) || null : null })));
+      if (selectedFundingRanges.length > 0) filteredData = filteredData.filter(g => { const a = g.max_amount || 0; return selectedFundingRanges.some(r => r === 'micro' ? a < 5000 : r === 'seed' ? a >= 5000 && a <= 50000 : a > 50000); });
+      
+      setGrants(filteredData);
     } catch (err: any) { setError(err.message); } finally { setLoading(false); }
   }
 
@@ -335,23 +329,23 @@ export default function Grants() {
             {grants.map((g) => (
               <div key={g.id} className="bg-[#1C2117] rounded-xl border border-[#4E5B2A]/20 hover:border-[#C6A15B]/30 hover:bg-[#242A1D] transition overflow-hidden flex flex-col group">
                 <div className="h-40 sm:h-48 bg-[#12150F] relative overflow-hidden">
-                  {g.featured_image ? <img src={getImageUrl(g.featured_image)} alt={g.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  {g.image ? <img src={getImageUrl(g.image)} alt={g.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   : <div className="w-full h-full flex items-center justify-center"><span className="text-3xl opacity-30">📋</span></div>}
                 </div>
                 <div className="p-4 sm:p-5 flex-1 flex flex-col">
                   <div className="flex justify-between items-start gap-2 mb-2">
                     <h2 className="text-base sm:text-lg font-semibold text-[#E7E4D8] line-clamp-2 flex-1">{g.title}</h2>
-                    <span className={`px-2 py-0.5 text-[10px] sm:text-xs rounded-full whitespace-nowrap shrink-0 ${g.status === 'published' ? 'bg-[#3F4F24]/30 text-[#C6A15B]' : 'bg-[#4E5B2A]/10 text-[#A6A99F]'}`}>
-                      {g.status === 'published' ? 'Open' : g.status === 'forecasted' ? 'Forecasted' : 'Closed'}
+                    <span className={`px-2 py-0.5 text-[10px] sm:text-xs rounded-full whitespace-nowrap shrink-0 ${g.status === 'active' ? 'bg-[#3F4F24]/30 text-[#C6A15B]' : 'bg-[#4E5B2A]/10 text-[#A6A99F]'}`}>
+                      {g.status === 'active' ? 'Open' : g.status === 'urgent' ? 'Urgent' : 'Closed'}
                     </span>
                   </div>
-                  <p className="text-[#A6A99F] text-xs sm:text-sm line-clamp-2 mb-3">{g.summary}</p>
+                  <p className="text-[#A6A99F] text-xs sm:text-sm line-clamp-2 mb-3">{g.teaser}</p>
                   <div className="flex flex-wrap gap-1.5 mt-auto">
-                    {g.amount && <span className="px-2 py-0.5 bg-[#3F4F24]/20 text-[#C6A15B] text-[10px] sm:text-xs rounded-full border border-[#4E5B2A]/30">{new Intl.NumberFormat('en-US', { style: 'currency', currency: g.currency || 'USD', minimumFractionDigits: 0 }).format(g.amount)}</span>}
+                    {g.max_amount && <span className="px-2 py-0.5 bg-[#3F4F24]/20 text-[#C6A15B] text-[10px] sm:text-xs rounded-full border border-[#4E5B2A]/30">{new Intl.NumberFormat('en-US', { style: 'currency', currency: g.currency || 'USD', minimumFractionDigits: 0 }).format(g.max_amount)}</span>}
                     {g.location && <span className="px-2 py-0.5 bg-[#3F4F24]/20 text-[#A6A99F] text-[10px] sm:text-xs rounded-full border border-[#4E5B2A]/30 truncate max-w-[120px] sm:max-w-none">{g.location.split('(')[0].trim()}</span>}
                   </div>
                   <p className="text-[10px] sm:text-xs text-[#6C6F66] mt-2">Deadline: {g.deadline ? new Date(g.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No deadline'}</p>
-                  <button onClick={() => { setSelectedGrantSlug(g.slug); setIsLoginModalOpen(true); }} className="mt-3 w-full px-3 py-2 sm:py-2.5 bg-[#C6A15B] text-[#12150F] rounded-lg hover:bg-[#d4b46d] transition text-xs sm:text-sm font-semibold">View Details →</button>
+                  <Link href={`/grants/${g.slug}`} className="mt-3 w-full px-3 py-2 sm:py-2.5 bg-[#C6A15B] text-[#12150F] rounded-lg hover:bg-[#d4b46d] transition text-xs sm:text-sm font-semibold text-center block">View Details →</Link>
                 </div>
               </div>
             ))}
