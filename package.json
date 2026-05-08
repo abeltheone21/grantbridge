@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest",
+    "migrate": "tsx db/migrate.ts",
     "seed": "tsx db/seed.ts",
     "generate:types": "payload generate:types"
   },
@@ -29,6 +31,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "vitest": "^3.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

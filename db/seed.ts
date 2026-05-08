@@ -2,11 +2,16 @@ import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+dotenv.config(); // Try default .env
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') }); // Also try .env.local
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-if (!url || !key) { process.exit(1); }
+
+if (!url || !key) {
+  console.error('Error: NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is missing from environment variables.');
+  process.exit(1);
+}
 
 const sb = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 
@@ -327,6 +332,7 @@ async function seed() {
       console.error(error.message);
     }
   }
+  console.log('✅ Seeding complete: 12 grants processed.');
 }
 
 seed().catch(console.error);

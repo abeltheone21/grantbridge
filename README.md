@@ -74,10 +74,13 @@ Fill in your `.env.local` with values from your Supabase dashboard:
 
 ### 3. Run database migrations
 
-Go to **Supabase Dashboard → SQL Editor** and run in order:
+You can run the migrations directly from your terminal:
 
-1. `db/migrations/001_schema.sql` — Creates all tables, indexes, triggers
-2. `db/migrations/002_rls_and_views.sql` — Creates public_grants view, RLS policies, get_public_grants RPC
+```bash
+npm run migrate
+```
+
+*Alternatively, you can copy the contents of `db/migrations/*.sql` and run them manually in the Supabase SQL Editor.*
 
 ### 4. Seed the database
 
