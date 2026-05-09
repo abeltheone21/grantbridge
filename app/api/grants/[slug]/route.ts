@@ -8,6 +8,8 @@ import { getServiceClient } from '@/lib/supabase/server';
 import { trackServerEvent } from '@/lib/analytics/posthog';
 import { ANALYTICS_EVENTS } from '@/lib/analytics/events';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
@@ -67,7 +69,8 @@ export async function GET(
         {
           status: 200,
           headers: {
-            'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+            'Cache-Control': 'no-store',
+            'Vary': 'Authorization',
           },
         }
       );
