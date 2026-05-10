@@ -26,16 +26,15 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
 }
 
 interface RecentGrant {
-  id: number;
+  id: string;
   title: string;
-  summary: string;
-  amount?: number;
+  teaser: string;
+  max_amount?: number;
   currency: string;
   location?: string;
   deadline?: string;
   slug: string;
-  featured_image_id?: number;
-  featured_image?: { filename: string; url?: string } | null;
+  image?: string | null;
 }
 
 export default function Home() {
@@ -84,37 +83,10 @@ export default function Home() {
 
   async function fetchRecentGrants() {
     try {
-      const { data: grantsData } = await supabase
-        .from('grants')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      if (grantsData) {
-        const imageIds = grantsData
-          .map(g => g.featured_image_id)
-          .filter((id): id is number => id !== null && id !== undefined);
-
-        let imageMap = new Map();
-        
-        if (imageIds.length > 0) {
-          const { data: mediaData } = await supabase
-            .from('media')
-            .select('*')
-            .in('id', imageIds);
-
-          if (mediaData) {
-            mediaData.forEach(media => imageMap.set(media.id, media));
-          }
-        }
-
-        const formatted = grantsData.map(grant => ({
-          ...grant,
-          featured_image: grant.featured_image_id ? imageMap.get(grant.featured_image_id) || null : null,
-        }));
-
-        setRecentGrants(formatted);
+      const res = await fetch('/api/grants/public?limit=3');
+      const json = await res.json();
+      if (res.ok && json.grants) {
+        setRecentGrants(json.grants);
       }
     } catch (err) {
       console.error('Error fetching recent grants:', err);
@@ -123,13 +95,7 @@ export default function Home() {
 
 function getGrantImageUrl(image: any): string {
   if (!image) return '';
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  if (image.filename && supabaseUrl) {
-    return `${supabaseUrl}/storage/v1/object/public/media/${encodeURIComponent(image.filename)}`;
-  }
-  if (image.url?.startsWith('/')) return `http://localhost:3001${image.url}`;
-  if (image.filename) return `http://localhost:3001/api/media/file/${encodeURIComponent(image.filename)}`;
-  return '';
+  return image;
 }
   const services = [
     { title: "Smart Grant Discovery", desc: "Find funding opportunities tailored to your sector and region with intelligent matching." },
@@ -321,9 +287,9 @@ function getGrantImageUrl(image: any): string {
                   className="group bg-[#1C2117] rounded-2xl overflow-hidden border border-[#4E5B2A]/20 hover:border-[#C6A15B]/30 hover:bg-[#242A1D] transition-all duration-300"
                 >
                   <div className="h-40 bg-[#12150F] relative overflow-hidden">
-                    {grant.featured_image ? (
+                    {grant.image ? (
                       <img 
-                        src={getGrantImageUrl(grant.featured_image)} 
+                        src={getGrantImageUrl(grant.image)} 
                         alt={grant.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -338,16 +304,16 @@ function getGrantImageUrl(image: any): string {
                     <h3 className="text-lg font-bold text-[#E7E4D8] mb-2 line-clamp-2 group-hover:text-[#C6A15B] transition-colors">
                       {grant.title}
                     </h3>
-                    <p className="text-[#A6A99F] text-sm line-clamp-2 mb-3">{grant.summary}</p>
+                    <p className="text-[#A6A99F] text-sm line-clamp-2 mb-3">{grant.teaser}</p>
                     
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {grant.amount && (
+                      {grant.max_amount && (
                         <span className="px-2 py-1 bg-[#3F4F24]/20 text-[#C6A15B] text-xs rounded-full border border-[#4E5B2A]/30">
                           {new Intl.NumberFormat('en-US', {
                             style: 'currency',
                             currency: grant.currency || 'USD',
                             minimumFractionDigits: 0,
-                          }).format(grant.amount)}
+                          }).format(grant.max_amount)}
                         </span>
                       )}
                       {grant.location && (

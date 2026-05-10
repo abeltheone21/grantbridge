@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 import { HiMenu, HiX } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
+import LoginModal from "@/components/LoginModal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -49,6 +51,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
@@ -107,6 +110,26 @@ export default function Navbar() {
               )}
             </Link>
           )}
+          {/* Auth Buttons */ }
+          <div className="pl-4 ml-4 border-l border-[#4E5B2A]/30">
+            {isLoggedIn ? (
+              <button
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                }}
+                className="px-4 py-2 text-sm font-semibold text-[#A6A99F] hover:text-[#E7E4D8] transition-colors"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-4 py-2 text-sm font-semibold bg-[#C6A15B] text-[#12150F] rounded-lg hover:bg-[#d4b46d] transition-colors shadow-lg shadow-[#C6A15B]/20"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -163,10 +186,40 @@ export default function Navbar() {
                   Dashboard
                 </Link>
               )}
+              {/* Auth Buttons Mobile */}
+              <div className="py-4 px-6 border-t border-[#4E5B2A]/20 mt-2 text-center">
+                {isLoggedIn ? (
+                  <button
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      setIsOpen(false);
+                    }}
+                    className="w-full py-2 text-[#A6A99F] hover:text-[#E7E4D8] font-medium"
+                  >
+                    Sign Out
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsLoginModalOpen(true);
+                      setIsOpen(false);
+                    }}
+                    className="w-full py-3 bg-[#C6A15B] text-[#12150F] rounded-xl font-bold"
+                  >
+                    Sign In
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </>
       )}
+      
+      {/* Dynamic import of LoginModal or we can just import it at the top */}
     </nav>
+      {isLoginModalOpen && (
+        <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      )}
+    </>
   );
 }
