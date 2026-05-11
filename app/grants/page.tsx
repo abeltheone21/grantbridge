@@ -205,18 +205,18 @@ export default function Grants() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#12150F] pt-14 sm:pt-16">
+    <div className="flex min-h-screen bg-[#F7FAFC] pt-14 sm:pt-16">
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
       
       {/* Desktop Sidebar */}
-      <aside className="w-72 bg-[#1C2117] border-r border-[#4E5B2A]/20 hidden md:flex flex-col shrink-0" style={{ height: 'calc(100vh - 56px)', position: 'sticky', top: '56px' }}>
-        <div className="p-5 border-b border-[#4E5B2A]/20">
+      <aside className="w-72 bg-[#FFFFFF] border-r border-[#E5E5E5]/20 hidden md:flex flex-col shrink-0" style={{ height: 'calc(100vh - 56px)', position: 'sticky', top: '56px' }}>
+        <div className="p-5 border-b border-[#E5E5E5]/20">
           <div className="flex justify-between items-center mb-3">
-            <h2 className="font-bold text-[#E7E4D8] text-lg">Filters</h2>
-            {hasActiveFilters && <button onClick={clearAllFilters} className="text-xs text-[#C6A15B] hover:text-[#d4b46d]">Clear all</button>}
+            <h2 className="font-bold text-[#1A202C] text-lg">Filters</h2>
+            {hasActiveFilters && <button onClick={clearAllFilters} className="text-xs text-[#88914C] hover:text-[#38411C]">Clear all</button>}
           </div>
-          <label className="flex items-center gap-2 text-xs text-[#A6A99F] cursor-pointer">
-            <input type="checkbox" checked={andLogic} onChange={() => setAndLogic(!andLogic)} className="accent-[#C6A15B]" /> Must include all (AND)
+          <label className="flex items-center gap-2 text-xs text-[#4A5568] cursor-pointer">
+            <input type="checkbox" checked={andLogic} onChange={() => setAndLogic(!andLogic)} className="accent-[#88914C]" /> Must include all (AND)
           </label>
         </div>
         <div className="flex-1 overflow-y-auto p-5 space-y-1">
@@ -225,7 +225,7 @@ export default function Grants() {
           </FilterSection>
           <FilterSection title="Focus Area (Sector)" isOpen={openSections.includes('sector')} onToggle={() => toggleSection('sector')}>
             {["Development", "Creative", "Startups"].map(p => (
-              <div key={p} className="mb-2"><p className="text-[#C6A15B] text-xs font-semibold mb-1">{p}</p>
+              <div key={p} className="mb-2"><p className="text-[#88914C] text-xs font-semibold mb-1">{p}</p>
                 {sectorOptions.filter(s => s.pillar === p).map(o => <FilterCheckbox key={o.value} label={o.label} checked={selectedSectors.includes(o.value)} onChange={() => toggleFilter(setSelectedSectors, o.value)} />)}
               </div>))}
           </FilterSection>
@@ -246,23 +246,23 @@ export default function Grants() {
       {showMobileFilters && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowMobileFilters(false)} />
-          <div className="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-[#1C2117] shadow-2xl overflow-y-auto">
-            <div className="sticky top-0 bg-[#1C2117] z-10 p-5 border-b border-[#4E5B2A]/20 flex justify-between items-center">
-              <h2 className="font-bold text-[#E7E4D8] text-lg">Filters</h2>
-              <button onClick={() => setShowMobileFilters(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-[#12150F] border border-[#4E5B2A]/30 text-[#A6A99F] hover:text-[#E7E4D8]" aria-label="Close filters">
+          <div className="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-[#FFFFFF] shadow-2xl overflow-y-auto">
+            <div className="sticky top-0 bg-[#FFFFFF] z-10 p-5 border-b border-[#E5E5E5]/20 flex justify-between items-center">
+              <h2 className="font-bold text-[#1A202C] text-lg">Filters</h2>
+              <button onClick={() => setShowMobileFilters(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-[#F7FAFC] border border-[#E5E5E5]/30 text-[#4A5568] hover:text-[#1A202C]" aria-label="Close filters">
                 <FaTimes size={14} />
               </button>
             </div>
             <div className="p-5">
-              <label className="flex items-center gap-2 text-xs text-[#A6A99F] mb-4 cursor-pointer">
-                <input type="checkbox" checked={andLogic} onChange={() => setAndLogic(!andLogic)} className="accent-[#C6A15B]" /> Must include all (AND)
+              <label className="flex items-center gap-2 text-xs text-[#4A5568] mb-4 cursor-pointer">
+                <input type="checkbox" checked={andLogic} onChange={() => setAndLogic(!andLogic)} className="accent-[#88914C]" /> Must include all (AND)
               </label>
               <FilterSection title="Status" isOpen={true} onToggle={() => {}}>
                 {statusOptions.map(o => <FilterCheckbox key={o.value} label={o.label} checked={selectedStatuses.includes(o.value)} onChange={() => toggleFilter(setSelectedStatuses, o.value)} />)}
               </FilterSection>
               <FilterSection title="Sector" isOpen={openSections.includes('sector')} onToggle={() => toggleSection('sector')}>
                 {["Development", "Creative", "Startups"].map(p => (
-                  <div key={p} className="mb-2"><p className="text-[#C6A15B] text-xs font-semibold mb-1">{p}</p>
+                  <div key={p} className="mb-2"><p className="text-[#88914C] text-xs font-semibold mb-1">{p}</p>
                     {sectorOptions.filter(s => s.pillar === p).map(o => <FilterCheckbox key={o.value} label={o.label} checked={selectedSectors.includes(o.value)} onChange={() => toggleFilter(setSelectedSectors, o.value)} />)}
                   </div>))}
               </FilterSection>
@@ -276,8 +276,8 @@ export default function Grants() {
                 {geographicOptions.map(o => <FilterCheckbox key={o.value} label={o.label} checked={selectedGeographic.includes(o.value)} onChange={() => toggleFilter(setSelectedGeographic, o.value)} />)}
               </FilterSection>
               <div className="mt-6 space-y-2">
-                <button onClick={exportToCSV} className="w-full px-4 py-2.5 bg-[#3F4F24] text-[#E7E4D8] rounded-lg text-sm flex items-center justify-center gap-2"><FaDownload /> Export CSV</button>
-                <button onClick={() => setShowSaveDialog(true)} className="w-full px-4 py-2.5 bg-[#C6A15B] text-[#12150F] rounded-lg text-sm font-semibold flex items-center justify-center gap-2"><FaBookmark /> Save Search</button>
+                <button onClick={exportToCSV} className="w-full px-4 py-2.5 bg-[#88914C] text-[#1A202C] rounded-lg text-sm flex items-center justify-center gap-2"><FaDownload /> Export CSV</button>
+                <button onClick={() => setShowSaveDialog(true)} className="w-full px-4 py-2.5 bg-[#88914C] text-[#F7FAFC] rounded-lg text-sm font-semibold flex items-center justify-center gap-2"><FaBookmark /> Save Search</button>
               </div>
               {hasActiveFilters && (
                 <button onClick={clearAllFilters} className="mt-4 w-full px-4 py-2.5 border border-red-500/30 text-red-400 rounded-lg text-sm">Clear All Filters</button>
@@ -290,8 +290,8 @@ export default function Grants() {
       {/* Main Content */}
       <main className="flex-1 p-3 sm:p-6 lg:p-10 min-w-0 overflow-hidden">
         <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#E7E4D8] truncate">Available Grants</h1>
-          <button onClick={exportToCSV} className="hidden sm:flex items-center gap-2 px-3 py-2 bg-[#1C2117] border border-[#4E5B2A]/30 text-[#C6A15B] rounded-lg hover:bg-[#242A1D] transition text-xs sm:text-sm shrink-0">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1A202C] truncate">Available Grants</h1>
+          <button onClick={exportToCSV} className="hidden sm:flex items-center gap-2 px-3 py-2 bg-[#FFFFFF] border border-[#E5E5E5]/30 text-[#88914C] rounded-lg hover:bg-[#F7FAFC] transition text-xs sm:text-sm shrink-0">
             <FaDownload className="text-xs" /> Export CSV
           </button>
         </div>
@@ -299,10 +299,10 @@ export default function Grants() {
         <div className="flex gap-2 mb-3 sm:mb-4">
           <div className="relative flex-1 min-w-0">
             <input type="text" placeholder="Search grants..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2.5 pl-10 sm:px-4 sm:py-3 sm:pl-12 bg-[#1C2117] border border-[#4E5B2A]/30 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C6A15B] text-[#E7E4D8] placeholder-[#6C6F66] text-sm" />
-            <FaSearch className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[#6C6F66] text-xs sm:text-sm" />
+              className="w-full px-3 py-2.5 pl-10 sm:px-4 sm:py-3 sm:pl-12 bg-[#FFFFFF] border border-[#E5E5E5]/30 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-[#88914C] text-[#1A202C] placeholder-[#718096] text-sm" />
+            <FaSearch className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[#718096] text-xs sm:text-sm" />
           </div>
-          <button onClick={() => setShowMobileFilters(true)} className="md:hidden px-3 py-2.5 bg-[#1C2117] border border-[#4E5B2A]/30 rounded-lg text-[#E7E4D8] shrink-0 flex items-center gap-1.5 text-sm">
+          <button onClick={() => setShowMobileFilters(true)} className="md:hidden px-3 py-2.5 bg-[#FFFFFF] border border-[#E5E5E5]/30 rounded-lg text-[#1A202C] shrink-0 flex items-center gap-1.5 text-sm">
             <FaFilter className="text-xs" /> Filters {hasActiveFilters && `(${allActiveFilters.length})`}
           </button>
         </div>
@@ -310,50 +310,50 @@ export default function Grants() {
         {hasActiveFilters && (
           <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
             {allActiveFilters.map((f, i) => (
-              <span key={i} className="px-2 py-1 bg-[#3F4F24]/20 text-[#C6A15B] text-[10px] sm:text-xs rounded-full flex items-center gap-1 border border-[#4E5B2A]/30">
+              <span key={i} className="px-2 py-1 bg-[#88914C]/20 text-[#88914C] text-[10px] sm:text-xs rounded-full flex items-center gap-1 border border-[#E5E5E5]/30">
                 <span className="truncate max-w-[100px] sm:max-w-none">{f.label}</span>
-                <button type="button" title={`Remove ${f.label}`} onClick={() => removeFilter(f.type, f.value)} className="hover:text-[#d4b46d] shrink-0"><FaTimes className="text-[8px] sm:text-[10px]" aria-hidden="true" /></button>
+                <button type="button" title={`Remove ${f.label}`} onClick={() => removeFilter(f.type, f.value)} className="hover:text-[#38411C] shrink-0"><FaTimes className="text-[8px] sm:text-[10px]" aria-hidden="true" /></button>
               </span>
             ))}
-            <button onClick={clearAllFilters} className="text-[10px] sm:text-xs text-[#A6A99F] hover:text-[#C6A15B] underline px-1">Clear all</button>
+            <button onClick={clearAllFilters} className="text-[10px] sm:text-xs text-[#4A5568] hover:text-[#88914C] underline px-1">Clear all</button>
           </div>
         )}
 
-        {!loading && <p className="text-xs sm:text-sm text-[#A6A99F] mb-3 sm:mb-4">Found {grants.length} grant{grants.length !== 1 ? 's' : ''}</p>}
+        {!loading && <p className="text-xs sm:text-sm text-[#4A5568] mb-3 sm:mb-4">Found {grants.length} grant{grants.length !== 1 ? 's' : ''}</p>}
         {error && <div className="bg-red-900/20 border border-red-500/30 text-red-400 px-3 py-2 rounded text-sm mb-4">Error: {error}</div>}
 
         {loading ? (
-          <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#C6A15B]"></div></div>
+          <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#88914C]"></div></div>
         ) : grants.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {grants.map((g) => (
-              <div key={g.id} className="bg-[#1C2117] rounded-xl border border-[#4E5B2A]/20 hover:border-[#C6A15B]/30 hover:bg-[#242A1D] transition overflow-hidden flex flex-col group">
-                <div className="h-40 sm:h-48 bg-[#12150F] relative overflow-hidden">
+              <div key={g.id} className="bg-[#FFFFFF] rounded-xl border border-[#E5E5E5]/20 hover:border-[#88914C]/30 hover:bg-[#F7FAFC] transition overflow-hidden flex flex-col group">
+                <div className="h-40 sm:h-48 bg-[#F7FAFC] relative overflow-hidden">
                   {g.image ? <img src={getImageUrl(g.image)} alt={g.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   : <div className="w-full h-full flex items-center justify-center"><span className="text-3xl opacity-30">📋</span></div>}
                 </div>
                 <div className="p-4 sm:p-5 flex-1 flex flex-col">
                   <div className="flex justify-between items-start gap-2 mb-2">
-                    <h2 className="text-base sm:text-lg font-semibold text-[#E7E4D8] line-clamp-2 flex-1">{g.title}</h2>
-                    <span className={`px-2 py-0.5 text-[10px] sm:text-xs rounded-full whitespace-nowrap shrink-0 ${g.status === 'active' ? 'bg-[#3F4F24]/30 text-[#C6A15B]' : 'bg-[#4E5B2A]/10 text-[#A6A99F]'}`}>
+                    <h2 className="text-base sm:text-lg font-semibold text-[#1A202C] line-clamp-2 flex-1">{g.title}</h2>
+                    <span className={`px-2 py-0.5 text-[10px] sm:text-xs rounded-full whitespace-nowrap shrink-0 ${g.status === 'active' ? 'bg-[#88914C]/30 text-[#88914C]' : 'bg-[#E5E5E5]/10 text-[#4A5568]'}`}>
                       {g.status === 'active' ? 'Open' : g.status === 'urgent' ? 'Urgent' : 'Closed'}
                     </span>
                   </div>
-                  <p className="text-[#A6A99F] text-xs sm:text-sm line-clamp-2 mb-3">{g.teaser}</p>
+                  <p className="text-[#4A5568] text-xs sm:text-sm line-clamp-2 mb-3">{g.teaser}</p>
                   <div className="flex flex-wrap gap-1.5 mt-auto">
-                    {g.max_amount && <span className="px-2 py-0.5 bg-[#3F4F24]/20 text-[#C6A15B] text-[10px] sm:text-xs rounded-full border border-[#4E5B2A]/30">{new Intl.NumberFormat('en-US', { style: 'currency', currency: g.currency || 'USD', minimumFractionDigits: 0 }).format(g.max_amount)}</span>}
-                    {g.location && <span className="px-2 py-0.5 bg-[#3F4F24]/20 text-[#A6A99F] text-[10px] sm:text-xs rounded-full border border-[#4E5B2A]/30 truncate max-w-[120px] sm:max-w-none">{g.location.split('(')[0].trim()}</span>}
+                    {g.max_amount && <span className="px-2 py-0.5 bg-[#88914C]/20 text-[#88914C] text-[10px] sm:text-xs rounded-full border border-[#E5E5E5]/30">{new Intl.NumberFormat('en-US', { style: 'currency', currency: g.currency || 'USD', minimumFractionDigits: 0 }).format(g.max_amount)}</span>}
+                    {g.location && <span className="px-2 py-0.5 bg-[#88914C]/20 text-[#4A5568] text-[10px] sm:text-xs rounded-full border border-[#E5E5E5]/30 truncate max-w-[120px] sm:max-w-none">{g.location.split('(')[0].trim()}</span>}
                   </div>
-                  <p className="text-[10px] sm:text-xs text-[#6C6F66] mt-2">Deadline: {g.deadline ? new Date(g.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No deadline'}</p>
-                  <Link href={`/grants/${g.slug}`} className="mt-3 w-full px-3 py-2 sm:py-2.5 bg-[#C6A15B] text-[#12150F] rounded-lg hover:bg-[#d4b46d] transition text-xs sm:text-sm font-semibold text-center block">View Details →</Link>
+                  <p className="text-[10px] sm:text-xs text-[#718096] mt-2">Deadline: {g.deadline ? new Date(g.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No deadline'}</p>
+                  <Link href={`/grants/${g.slug}`} className="mt-3 w-full px-3 py-2 sm:py-2.5 bg-[#88914C] text-[#F7FAFC] rounded-lg hover:bg-[#38411C] transition text-xs sm:text-sm font-semibold text-center block">View Details →</Link>
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-[#A6A99F] text-sm sm:text-lg">No grants found</p>
-            {hasActiveFilters && <button onClick={clearAllFilters} className="mt-3 text-xs sm:text-sm text-[#C6A15B] hover:text-[#d4b46d] underline">Clear all filters</button>}
+            <p className="text-[#4A5568] text-sm sm:text-lg">No grants found</p>
+            {hasActiveFilters && <button onClick={clearAllFilters} className="mt-3 text-xs sm:text-sm text-[#88914C] hover:text-[#38411C] underline">Clear all filters</button>}
           </div>
         )}
       </main>
@@ -364,18 +364,18 @@ export default function Grants() {
 // Sidebar Buttons Component
 function SidebarButtons({ exportToCSV, showSaveDialog, setShowSaveDialog, savedSearches, showSavedSearches, setShowSavedSearches, saveSearchName, setSaveSearchName, saveSearch, savingSearch, loadSearch, deleteSearch }: any) {
   return (
-    <div className="p-5 border-t border-[#4E5B2A]/20 space-y-2 shrink-0">
-      <button onClick={exportToCSV} className="w-full px-4 py-2.5 bg-[#3F4F24] text-[#E7E4D8] rounded-lg hover:bg-[#4E5B2A] transition text-sm flex items-center justify-center gap-2"><FaDownload className="text-xs" /> Export as .csv</button>
-      <button onClick={() => setShowSaveDialog(true)} className="w-full px-4 py-2.5 bg-[#C6A15B] text-[#12150F] rounded-lg hover:bg-[#d4b46d] transition text-sm font-semibold flex items-center justify-center gap-2"><FaBookmark className="text-xs" /> Save Search</button>
+    <div className="p-5 border-t border-[#E5E5E5]/20 space-y-2 shrink-0">
+      <button onClick={exportToCSV} className="w-full px-4 py-2.5 bg-[#88914C] text-[#1A202C] rounded-lg hover:bg-[#E5E5E5] transition text-sm flex items-center justify-center gap-2"><FaDownload className="text-xs" /> Export as .csv</button>
+      <button onClick={() => setShowSaveDialog(true)} className="w-full px-4 py-2.5 bg-[#88914C] text-[#F7FAFC] rounded-lg hover:bg-[#38411C] transition text-sm font-semibold flex items-center justify-center gap-2"><FaBookmark className="text-xs" /> Save Search</button>
       {savedSearches.length > 0 && (
-        <button onClick={() => setShowSavedSearches(!showSavedSearches)} className="w-full px-4 py-2.5 text-[#A6A99F] text-xs hover:text-[#C6A15B] transition text-center">{showSavedSearches ? 'Hide' : 'Show'} Saved ({savedSearches.length})</button>
+        <button onClick={() => setShowSavedSearches(!showSavedSearches)} className="w-full px-4 py-2.5 text-[#4A5568] text-xs hover:text-[#88914C] transition text-center">{showSavedSearches ? 'Hide' : 'Show'} Saved ({savedSearches.length})</button>
       )}
       {showSaveDialog && (
         <div className="pt-3">
-          <input type="text" value={saveSearchName} onChange={(e) => setSaveSearchName(e.target.value)} placeholder="e.g., Health grants" className="w-full px-3 py-2 bg-[#12150F] border border-[#4E5B2A]/30 rounded-lg text-[#E7E4D8] text-xs mb-2" onKeyDown={(e) => e.key === 'Enter' && saveSearch()} />
+          <input type="text" value={saveSearchName} onChange={(e) => setSaveSearchName(e.target.value)} placeholder="e.g., Health grants" className="w-full px-3 py-2 bg-[#F7FAFC] border border-[#E5E5E5]/30 rounded-lg text-[#1A202C] text-xs mb-2" onKeyDown={(e) => e.key === 'Enter' && saveSearch()} />
           <div className="flex gap-2">
-            <button onClick={saveSearch} disabled={savingSearch} className="flex-1 px-3 py-1.5 bg-[#C6A15B] text-[#12150F] rounded-lg text-xs font-semibold">{savingSearch ? 'Saving...' : 'Save'}</button>
-            <button onClick={() => { setShowSaveDialog(false); setSaveSearchName(''); }} className="px-3 py-1.5 border border-[#4E5B2A]/30 text-[#A6A99F] rounded-lg text-xs">Cancel</button>
+            <button onClick={saveSearch} disabled={savingSearch} className="flex-1 px-3 py-1.5 bg-[#88914C] text-[#F7FAFC] rounded-lg text-xs font-semibold">{savingSearch ? 'Saving...' : 'Save'}</button>
+            <button onClick={() => { setShowSaveDialog(false); setSaveSearchName(''); }} className="px-3 py-1.5 border border-[#E5E5E5]/30 text-[#4A5568] rounded-lg text-xs">Cancel</button>
           </div>
         </div>
       )}
@@ -383,8 +383,8 @@ function SidebarButtons({ exportToCSV, showSaveDialog, setShowSaveDialog, savedS
         <div className="max-h-40 overflow-y-auto space-y-1.5 pt-2">
           {savedSearches.map((s: SavedSearch) => (
             <div key={s.id} className="flex items-center justify-between gap-2 group">
-              <button onClick={() => loadSearch(s)} className="text-xs text-[#C6A15B] hover:text-[#d4b46d] text-left flex-1 truncate">{s.name}</button>
-              <button onClick={() => deleteSearch(s.id)} className="text-[#6C6F66] hover:text-red-400 text-xs shrink-0 opacity-0 group-hover:opacity-100"><FaTrash /></button>
+              <button onClick={() => loadSearch(s)} className="text-xs text-[#88914C] hover:text-[#38411C] text-left flex-1 truncate">{s.name}</button>
+              <button onClick={() => deleteSearch(s.id)} className="text-[#718096] hover:text-red-400 text-xs shrink-0 opacity-0 group-hover:opacity-100"><FaTrash /></button>
             </div>
           ))}
         </div>
@@ -395,8 +395,8 @@ function SidebarButtons({ exportToCSV, showSaveDialog, setShowSaveDialog, savedS
 
 function FilterSection({ title, isOpen, onToggle, children }: { title: string; isOpen: boolean; onToggle: () => void; children: React.ReactNode }) {
   return (
-    <div className="border-b border-[#4E5B2A]/10 pb-2 mb-2">
-      <button onClick={onToggle} aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${title}`} className="flex items-center justify-between w-full text-left py-2 text-[#E7E4D8] font-semibold text-xs sm:text-sm hover:text-[#C6A15B] transition-colors">
+    <div className="border-b border-[#E5E5E5]/10 pb-2 mb-2">
+      <button onClick={onToggle} aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${title}`} className="flex items-center justify-between w-full text-left py-2 text-[#1A202C] font-semibold text-xs sm:text-sm hover:text-[#88914C] transition-colors">
         {title}
         {isOpen ? <FaChevronUp className="text-[10px] shrink-0" aria-hidden="true" /> : <FaChevronDown className="text-[10px] shrink-0" aria-hidden="true" />}
       </button>
@@ -407,8 +407,8 @@ function FilterSection({ title, isOpen, onToggle, children }: { title: string; i
 
 function FilterCheckbox({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
   return (
-    <label className="flex items-center gap-2 py-1 cursor-pointer hover:text-[#C6A15B] transition-colors text-[11px] sm:text-xs text-[#A6A99F]">
-      <input type="checkbox" checked={checked} onChange={onChange} className="accent-[#C6A15B] rounded shrink-0" />
+    <label className="flex items-center gap-2 py-1 cursor-pointer hover:text-[#88914C] transition-colors text-[11px] sm:text-xs text-[#4A5568]">
+      <input type="checkbox" checked={checked} onChange={onChange} className="accent-[#88914C] rounded shrink-0" />
       <span className="leading-tight">{label}</span>
     </label>
   );
