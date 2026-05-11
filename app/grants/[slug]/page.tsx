@@ -36,36 +36,49 @@ export default function GrantDetails({ params }: { params: Promise<{ slug: strin
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      fetchGrantDetails(session?.access_token);
+      fetchGrantDetails();
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      fetchGrantDetails(session?.access_token);
+      fetchGrantDetails();
     });
 
     return () => subscription.unsubscribe();
   }, [slug]);
 
-  async function fetchGrantDetails(token?: string) {
+  async function fetchGrantDetails() {
     setLoading(true);
     try {
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
+      // Try to fetch full details first (RLS will filter this if not authenticated)
+      const { data, error } = await supabase
+        .from('grants')
+        .select('*')
+        .eq('slug', slug)
+        .not('published_at', 'is', null)
+        .maybeSingle();
 
-      const res = await fetch(`/api/grants/${slug}`, { headers });
-      if (!res.ok) {
-        if (res.status === 404) throw new Error("Grant not found");
-        throw new Error("Failed to fetch grant details");
-      }
+      if (data) {
+        setGrant(data as GrantDetail);
+        setRequiresAuth(false);
+      } else {
+        // If no data, try to fetch from public view (teaser only)
+        const { data: publicData, error: publicError } = await supabase
+          .from('public_grants')
+          .select('*')
+          .eq('slug', slug)
+          .maybeSingle();
 
-      const json = await res.json();
-      setGrant(json.grant);
-      setRequiresAuth(json.requires_auth === true);
+        if (publicData) {
+          setGrant(publicData as GrantDetail);
+          setRequiresAuth(true);
+        } else {
+          throw new Error("Grant not found or access denied");
+        }
+      }
     } catch (err: any) {
+      console.error('Fetch error:', err);
       setError(err.message);
     } finally {
       setLoading(false);

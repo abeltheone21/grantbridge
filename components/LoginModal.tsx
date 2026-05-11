@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { FaTimes, FaArrowRight } from "react-icons/fa";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase/client";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,9 +17,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Need supabase client
-  const { supabase } = require("@/lib/supabase/client");
 
   if (!isOpen) return null;
 
@@ -227,7 +226,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
 
           <p className="text-xs text-[#6C6F66] text-center mt-4">
-            By continuing, you agree to our Terms of Service and Privacy Policy.
+            By continuing, you agree to our{' '}
+            <Link href="/terms" className="underline hover:text-[#C6A15B] transition-colors" onClick={onClose}>Terms of Service</Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="underline hover:text-[#C6A15B] transition-colors" onClick={onClose}>Privacy Policy</Link>.
           </p>
         </div>
       </div>

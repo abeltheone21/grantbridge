@@ -1,5 +1,6 @@
 import Navbar from "./components/navbar"; 
 import "./globals.css";
+import { PostHogProvider, PostHogPageView } from "@/components/PostHogProvider";
 
 export default function RootLayout({
   children,
@@ -13,10 +14,11 @@ export default function RootLayout({
         <meta name="get funding " content="Discover and applay for grants"/>
       </head>
       <body className="bg-white text-gray-900">
-        
-        <Navbar /> 
-
-        <main>{children}</main>
+        <PostHogProvider>
+          <PostHogPageView />
+          <Navbar /> 
+          <main>{children}</main>
+        </PostHogProvider>
       </body>
     </html>
   );

@@ -83,10 +83,13 @@ export default function Home() {
 
   async function fetchRecentGrants() {
     try {
-      const res = await fetch('/api/grants/public?limit=3');
-      const json = await res.json();
-      if (res.ok && json.grants) {
-        setRecentGrants(json.grants);
+      const { data, error } = await supabase
+        .from('public_grants')
+        .select('*')
+        .limit(3);
+
+      if (!error && data) {
+        setRecentGrants(data as RecentGrant[]);
       }
     } catch (err) {
       console.error('Error fetching recent grants:', err);
@@ -500,7 +503,12 @@ function getGrantImageUrl(image: any): string {
           </a>
         </div>
 
-        <p className="text-[#6C6F66] text-sm">
+        <div className="flex justify-center gap-6 mb-6">
+          <Link href="/privacy" className="text-[#6C6F66] hover:text-[#C6A15B] text-sm transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="text-[#6C6F66] hover:text-[#C6A15B] text-sm transition-colors">Terms of Service</Link>
+        </div>
+
+        <p className="text-[#6C6F66] text-xs opacity-50">
           © {new Date().getFullYear()} GrantBridge. All rights reserved.
         </p>
       </footer>

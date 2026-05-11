@@ -188,20 +188,51 @@ export default function Grants() {
   async function fetchGrants() {
     setLoading(true); setError(null);
     try {
-      const queryParams = new URLSearchParams({ limit: '100' });
-      if (debouncedSearch) queryParams.append('search', debouncedSearch);
-      if (selectedStatuses.length > 0) queryParams.append('status', selectedStatuses[0]);
+      let query = supabase
+        .from('grants')
+        .select('*')
+        .not('published_at', 'is', null);
 
-      const res = await fetch(`/api/grants/public?${queryParams.toString()}`);
-      if (!res.ok) throw new Error('Failed to fetch grants');
-      const json = await res.json();
+      if (debouncedSearch) {
+        query = query.ilike('title', `%${debouncedSearch}%`);
+      }
+
+      if (selectedStatuses.length > 0) {
+        query = query.in('status', selectedStatuses);
+      }
+
+      const { data, error } = await query.limit(100);
+
+      if (error) throw error;
       
-      let filteredData = (json.grants || []) as Grant[];
-      if (selectedSectors.length > 0) filteredData = filteredData.filter(g => { const gs = g.sector?.toLowerCase() || ''; return selectedSectors.some(s => gs.includes(s)); });
-      if (selectedFundingRanges.length > 0) filteredData = filteredData.filter(g => { const a = g.max_amount || 0; return selectedFundingRanges.some(r => r === 'micro' ? a < 5000 : r === 'seed' ? a >= 5000 && a <= 50000 : a > 50000); });
+      let filteredData = (data || []) as Grant[];
+      
+      // Client-side filtering for sectors and funding ranges
+      if (selectedSectors.length > 0) {
+        filteredData = filteredData.filter(g => {
+          const gs = g.sector?.toLowerCase() || '';
+          return selectedSectors.some(s => gs.includes(s));
+        });
+      }
+
+      if (selectedFundingRanges.length > 0) {
+        filteredData = filteredData.filter(g => {
+          const a = g.max_amount || 0;
+          return selectedFundingRanges.some(r => 
+            r === 'micro' ? a < 5000 : 
+            r === 'seed' ? a >= 5000 && a <= 50000 : 
+            a > 50000
+          );
+        });
+      }
       
       setGrants(filteredData);
-    } catch (err: any) { setError(err.message); } finally { setLoading(false); }
+    } catch (err: any) { 
+      console.error('Fetch error:', err);
+      setError(err.message); 
+    } finally { 
+      setLoading(false); 
+    }
   }
 
   return (
