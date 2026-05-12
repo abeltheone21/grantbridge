@@ -356,7 +356,17 @@ export default function Grants() {
             {hasActiveFilters && <button onClick={clearAllFilters} className="mt-3 text-xs sm:text-sm text-[#88914C] hover:text-[#38411C] underline">Clear all filters</button>}
           </div>
         )}
+                {/* Har Impact Signature */}
+        <div className="border-t border-[#E5E5E5] mt-8 pt-6 pb-4 text-center">
+          <p className="text-xs text-[#718096] mb-2">Powered by</p>
+          <img 
+            src="/har-impact-logo.png" 
+            alt="Har Impact" 
+           className="h-16 mx-auto opacity-70 hover:opacity-100 transition-opacity"
+          />
+        </div>
       </main>
+      
     </div>
   );
 }

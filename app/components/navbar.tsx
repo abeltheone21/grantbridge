@@ -61,12 +61,17 @@ export default function Navbar() {
       }`}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
-        <Link href="/grants" className="flex items-center gap-2 group">
-          <span className="text-xl font-bold">
-            <span className="text-[#1A202C]">Grant</span>
-            <span className="text-[#88914C]">Bridge</span>
-          </span>
-        </Link>
+      <Link href="/grants" className="flex items-center gap-2 group">
+  <img 
+    src="/har-impact-logo.png" 
+    alt="Har Impact" 
+    className="h-10 opacity-80 group-hover:opacity-100 transition-opacity"
+  />
+  <span className="text-xl font-bold">
+    <span className="text-[#1A202C]">Grant</span>
+    <span className="text-[#88914C]">Bridge</span>
+  </span>
+</Link>
 
         <div className="hidden md:flex items-center space-x-1">
           {/* Public Links */}
