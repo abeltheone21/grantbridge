@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServiceClient } from '@/lib/supabase/server';
+import { getServiceClient, getUserClient } from '@/lib/supabase/server';
 import { publicGrantsQuerySchema } from '@/lib/validation/schemas';
 
 export async function GET(request: NextRequest) {
   try {
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized access' }, { status: 401 });
+    }
+    const token = authHeader.split(' ')[1];
+
+    const supabase = getUserClient(token);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized access' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const rawParams = Object.fromEntries(searchParams.entries());
 
@@ -22,7 +35,6 @@ export async function GET(request: NextRequest) {
     } = parsed.data;
 
     const offset = (page - 1) * limit;
-    const supabase = getServiceClient();
 
     const { data, error } = await supabase.rpc('get_public_grants', {
       p_status: status || null,

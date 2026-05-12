@@ -188,12 +188,28 @@ export default function Grants() {
   async function fetchGrants() {
     setLoading(true); setError(null);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setGrants([]);
+        setError("You must be logged in to view grants.");
+        setIsLoginModalOpen(true);
+        setLoading(false);
+        return;
+      }
+
       const queryParams = new URLSearchParams({ limit: '100' });
       if (debouncedSearch) queryParams.append('search', debouncedSearch);
       if (selectedStatuses.length > 0) queryParams.append('status', selectedStatuses[0]);
 
-      const res = await fetch(`/api/grants/public?${queryParams.toString()}`);
-      if (!res.ok) throw new Error('Failed to fetch grants');
+      const headers: Record<string, string> = {
+        'Authorization': `Bearer ${session.access_token}`
+      };
+
+      const res = await fetch(`/api/grants/public?${queryParams.toString()}`, { headers });
+      if (!res.ok) {
+        if (res.status === 401) throw new Error('Unauthorized access');
+        throw new Error('Failed to fetch grants');
+      }
       const json = await res.json();
       
       let filteredData = (json.grants || []) as Grant[];
