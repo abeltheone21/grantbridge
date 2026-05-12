@@ -157,6 +157,5 @@ export default function TermsAndConditions() {
           </a>
         </div>
       </section>
-    </div>
   );
 }

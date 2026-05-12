@@ -188,6 +188,15 @@ export default function Grants() {
   async function fetchGrants() {
     setLoading(true); setError(null);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setGrants([]);
+        setError("You must be logged in to view grants.");
+        setIsLoginModalOpen(true);
+        setLoading(false);
+        return;
+      }
+
       let query = supabase
         .from('grants')
         .select('*')

@@ -151,6 +151,5 @@ export default function PrivacyPolicy() {
           </a>
         </div>
       </section>
-    </div>
   );
 }
