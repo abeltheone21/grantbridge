@@ -11,7 +11,7 @@ type Args = {
   children: React.ReactNode;
 };
 
-const serverFunction = (args: { args: unknown[]; name: string }) =>
+const serverFunction = (args: any) =>
   handleServerFunctions({
     ...args,
     config,
