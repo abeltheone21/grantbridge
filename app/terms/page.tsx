@@ -7,25 +7,25 @@ export const metadata = {
 
 export default function TermsAndConditions() {
   return (
-    <div className="min-h-screen bg-[#0A0C08] text-[#E7E4D8] selection:bg-[#C6A15B] selection:text-[#12150F]">
+    <div className="min-h-screen bg-[#F7FAFC] text-[#1A202C] selection:bg-[#88914C] selection:text-[#FFFFFF]">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full pointer-events-none opacity-20">
-          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#3F4F24] blur-[120px]" />
-          <div className="absolute bottom-[10%] left-[-10%] w-[30%] h-[30%] rounded-full bg-[#C6A15B] blur-[100px]" />
+          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#88914C] blur-[120px]" />
+          <div className="absolute bottom-[10%] left-[-10%] w-[30%] h-[30%] rounded-full bg-[#88914C] blur-[100px]" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-              Terms & <span className="text-[#C6A15B]">Conditions</span>
+              Terms & <span className="text-[#88914C]">Conditions</span>
             </h1>
-            <p className="text-xl text-[#A6A99F] leading-relaxed">
+            <p className="text-xl text-[#4A5568] leading-relaxed">
               Please read these terms and conditions carefully before using our platform. By accessing GrantBridge, you agree to be bound by these terms.
             </p>
-            <div className="mt-8 flex items-center gap-4 text-sm text-[#6C6F66]">
+            <div className="mt-8 flex items-center gap-4 text-sm text-[#718096]">
               <span>Last Updated: May 11, 2026</span>
-              <span className="w-1 h-1 rounded-full bg-[#4E5B2A]" />
+              <span className="w-1 h-1 rounded-full bg-[#E5E5E5]" />
               <span>Version: 2.1.0</span>
             </div>
           </div>
@@ -38,7 +38,7 @@ export default function TermsAndConditions() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             {/* Sidebar Navigation */}
             <aside className="lg:col-span-4 hidden lg:block sticky top-32 h-fit">
-              <nav className="space-y-2 border-l border-[#4E5B2A]/20 pl-6">
+              <nav className="space-y-2 border-l border-[#E5E5E5]/20 pl-6">
                 {[
                   { id: 'acceptance', label: '1. Acceptance of Terms' },
                   { id: 'eligibility', label: '2. User Eligibility' },
@@ -51,7 +51,7 @@ export default function TermsAndConditions() {
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="block py-2 text-[#A6A99F] hover:text-[#C6A15B] transition-colors text-sm font-medium"
+                    className="block py-2 text-[#4A5568] hover:text-[#88914C] transition-colors text-sm font-medium"
                   >
                     {item.label}
                   </a>
@@ -60,10 +60,10 @@ export default function TermsAndConditions() {
             </aside>
 
             {/* Main Content */}
-            <div className="lg:col-span-8 max-w-none prose prose-invert prose-headings:text-[#E7E4D8] prose-p:text-[#A6A99F] prose-li:text-[#A6A99F] prose-strong:text-[#C6A15B]">
+            <div className="lg:col-span-8 max-w-none prose prose-invert prose-headings:text-[#1A202C] prose-p:text-[#4A5568] prose-li:text-[#4A5568] prose-strong:text-[#88914C]">
               <div id="acceptance" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">01.</span> Acceptance of Terms
+                  <span className="text-[#88914C]">01.</span> Acceptance of Terms
                 </h2>
                 <p>
                   By accessing or using GrantBridge (the "Service"), you agree to be bound by these Terms and Conditions ("Terms"). If you disagree with any part of the terms, then you may not access the Service.
@@ -75,7 +75,7 @@ export default function TermsAndConditions() {
 
               <div id="eligibility" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">02.</span> User Eligibility
+                  <span className="text-[#88914C]">02.</span> User Eligibility
                 </h2>
                 <p>
                   The Service is intended for users who are at least 18 years old. By using the Service, you represent and warrant that you are of legal age to form a binding contract with GrantBridge and meet all of the foregoing eligibility requirements.
@@ -84,7 +84,7 @@ export default function TermsAndConditions() {
 
               <div id="accounts" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">03.</span> User Accounts
+                  <span className="text-[#88914C]">03.</span> User Accounts
                 </h2>
                 <p>
                   When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.
@@ -96,7 +96,7 @@ export default function TermsAndConditions() {
 
               <div id="content" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">04.</span> Platform Content
+                  <span className="text-[#88914C]">04.</span> Platform Content
                 </h2>
                 <p>
                   Our Service allows you to view grant information, submit applications, and post comments. You are responsible for the content you provide.
@@ -108,7 +108,7 @@ export default function TermsAndConditions() {
 
               <div id="prohibited" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">05.</span> Prohibited Conduct
+                  <span className="text-[#88914C]">05.</span> Prohibited Conduct
                 </h2>
                 <p>You agree not to engage in any of the following prohibited activities:</p>
                 <ul className="list-disc pl-6 space-y-3">
@@ -121,7 +121,7 @@ export default function TermsAndConditions() {
 
               <div id="termination" className="mb-16 scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">06.</span> Termination
+                  <span className="text-[#88914C]">06.</span> Termination
                 </h2>
                 <p>
                   We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.
@@ -133,10 +133,10 @@ export default function TermsAndConditions() {
 
               <div id="liability" className="scroll-mt-32">
                 <h2 className="text-3xl font-bold mb-6 flex items-center gap-4">
-                  <span className="text-[#C6A15B]">07.</span> Limitation of Liability
+                  <span className="text-[#88914C]">07.</span> Limitation of Liability
                 </h2>
                 <p>
-                  In no event shall GrantBridge, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service.
+                  In no event shall Har Grant Plus, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service.
                 </p>
               </div>
             </div>
@@ -145,13 +145,13 @@ export default function TermsAndConditions() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 border-t border-[#4E5B2A]/20">
+      <section className="py-20 border-t border-[#E5E5E5]/20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold mb-4">Have questions about our terms?</h2>
-          <p className="text-[#A6A99F] mb-8">We're here to help you understand our platform rules.</p>
+          <p className="text-[#4A5568] mb-8">We're here to help you understand our platform rules.</p>
           <a 
             href="mailto:legal@grantbridge.com"
-            className="inline-flex items-center justify-center px-8 py-3 bg-[#C6A15B] text-[#12150F] rounded-xl font-bold hover:bg-[#d4b46d] transition-all"
+           className="inline-flex items-center justify-center px-8 py-3 bg-[#38411C] text-[#FFFFFF] rounded-xl font-bold hover:bg-[#FFFFFF] hover:text-[#38411C] border border-[#38411C] transition-all"
           >
             Contact Legal Team
           </a>

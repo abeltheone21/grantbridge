@@ -134,7 +134,7 @@ export default function ContactPage() {
       <footer className="border-t border-[#E5E5E5]/10 py-8 px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-3">
           <span className="text-[#1A202C] font-bold text-lg">
-            Grant<span className="text-[#38411C]">Bridge</span>
+              Har <span className="text-[#88914C]">Grant Plus</span>
           </span>
         </div>
 
@@ -154,7 +154,12 @@ export default function ContactPage() {
         </div>
 
         <p className="text-[#718096] text-sm">
-          © {new Date().getFullYear()} GrantBridge. All rights reserved.
+          <img src="/har-impact-logo.png" 
+          alt="Har Impact - Potential Made Real" 
+          className="h-14 mx-auto mb-3 opacity-70 hover:opacity-100 transition-opacity"
+/>
+
+          © {new Date().getFullYear()} Har Grant plus. All rights reserved.
         </p>
       </footer>
     </div>
